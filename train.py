@@ -27,7 +27,8 @@ from dataloader import get_loader
 import utils
 from utils import str2bool, AverageMeter
 import augmentations
-from argparser import get_config
+from argparser import get_config,get_dir
+import sys
 
 torch.backends.cudnn.benchmark = True
 
@@ -75,7 +76,7 @@ def parse_args():
     # model config (SENet)
     parser.add_argument('--se_reduction', type=int)
 
-    parser.add_argument('--outdir', type=str, required=True)
+    parser.add_argument('--outdir', type=str)
     parser.add_argument('--seed', type=int, default=17)
     parser.add_argument('--test_first', type=str2bool, default=True)
     parser.add_argument('--device', type=str, default='cuda')
@@ -172,6 +173,7 @@ def parse_args():
         args.fp16 = True
 
     config = get_config(args)
+
 
     return config
 

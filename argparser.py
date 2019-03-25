@@ -1,7 +1,9 @@
 import json
 from collections import OrderedDict
 import torch
-
+import sys
+import os
+import datetime
 
 def _args2config(args, keys, json_keys):
     if json_keys is None:
@@ -369,4 +371,39 @@ def get_config(args):
         'run_config': _get_run_config(args),
         'env_info': _get_env_info(args),
     })
+
+    dir = get_dir(config,sys.argv)
+
+    print(dir)
+    if not os.path.isdir(dir):
+        config['run_config']['outdir']=dir
+    else :
+        config['run_config']['outdir']=dir+'-'+ datetime.datetime.now().strftime('m%d%H')
+
     return config
+
+
+def get_dir(config,argv):
+    dir = './result/'+config['data_config']['dataset']+'/'+config['model_config']['arch']
+    parm = (' '.join(argv))
+    parm = parm.replace('--', '-')
+    arg = parm.split('-')
+
+    configkey = list(config['model_config'].keys())+list(config['optim_config'].keys()) \
+                +list(config['data_config'].keys())+list(config['run_config'].keys())
+
+    for setting in arg:
+        key = setting.split(' ')[0]
+
+        if key in configkey and key not in['dataset','arch','outdir']:
+            dir = dir + '-' + key
+            rest = setting.replace(key, '').replace(' ', '')
+            if rest is not '':
+                dir = dir + '-' + rest
+
+    dir.replace('\r','').replace('\n','')
+
+    return dir
+
+
+
