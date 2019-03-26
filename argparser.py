@@ -156,6 +156,10 @@ def _get_data_config(args):
         'ricap_beta',
         'use_label_smoothing',
         'label_smoothing_epsilon',
+        'use_cl_lp',
+        'lp_alpha',
+        'lp_p',
+        'is_select'
     ]
     json_keys = ['random_erasing_area_ratio_range']
     config = _args2config(args, keys, json_keys)

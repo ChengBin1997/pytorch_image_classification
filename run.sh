@@ -55,13 +55,18 @@
 #CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 56 --use_random_erasing  --dataset CIFAR100
 
 # 3月23日
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 20 --scheduler cosine
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 32 --scheduler cosine
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 44 --scheduler cosine
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 56 --scheduler cosine
+#CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 20 --scheduler cosine
+#CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 32 --scheduler cosine
+#CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 44 --scheduler cosine
+#CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 56 --scheduler cosine
 
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 20 --scheduler cosine  --dataset CIFAR100
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 32 --scheduler cosine  --dataset CIFAR100
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 44 --scheduler cosine  --dataset CIFAR100
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 56 --scheduler cosine  --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 20 --scheduler cosine  --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 32 --scheduler cosine  --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 44 --scheduler cosine  --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 56 --scheduler cosine  --dataset CIFAR100
 
+# 3月25日
+CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 20 --use_cl_lp
+CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 32
+CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 44
+CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 56
