@@ -35,6 +35,9 @@ def save_checkpoint(state, outdir):
     torch.save(state, model_path)
     if state['best_epoch'] == state['epoch']:
         shutil.copy(model_path, best_model_path)
+    if state['epoch']%20 == 0:
+        filename = 'checkpoint-e'+str(state['epoch'])+'.pth'
+        shutil.copy(model_path,outdir / filename)
 
 
 def save_epoch_logs(epoch_logs, outdir):
@@ -219,7 +222,7 @@ def get_criterion(data_config):
     elif data_config['use_dual_cutout']:
         train_criterion = augmentations.cutout.DualCutoutCriterion(
             data_config['dual_cutout_alpha'])
-    elif data_config['use_cl_lp']:
+    elif data_config['use_cl_lp'] or data_config['use_rgl_cl_lp']:
         train_criterion = CategoryLabelProcessCriterion(
             data_config['n_classes'],data_config['lp_alpha'],data_config['lp_p'],data_config['is_select'])
     else:
@@ -227,22 +230,44 @@ def get_criterion(data_config):
     test_criterion = nn.CrossEntropyLoss(reduction='mean')
     return train_criterion, test_criterion
 
-def save_pic_and_acc(train_loss,test_loss,train_acc,test_acc,path):
-    plt.figure(figsize=[14,7])
-    plt.subplot(1,2,1)
-    plt.plot(train_loss,label = "train loss")
-    plt.plot(test_loss,label = "test_loss")
-    plt.legend()
-    plt.subplot(1,2,2)
-    plt.plot(train_acc,label = "train_acc")
-    plt.plot(test_acc,label = "test_acc")
-    plt.legend()
-    index = np.argmax(test_acc)
-    plt.scatter(index,test_acc[index],edgecolors='r',label="best_acc "+str(test_acc[index]))
-    print("best_acc："+str(test_acc[index]))
-    plt.legend()
-    #plt.show()
-    plt.savefig(path+'/result.png')
+def save_pic_and_acc(path):
+
+    with open(path+'/log.json', 'r') as json_file:
+        parm = json.load(json_file)
+
+    train_acc=[]
+    test_acc=[]
+    train_loss=[]
+    test_loss=[]
+
+
+    for epoch in parm:
+        train_acc.append(epoch['train']['accuracy'])
+        test_acc.append(epoch['test']['accuracy'])
+        train_loss.append(epoch['train']['loss'])
+        test_loss.append(epoch['test']['loss'])
+
+    import os
+    if not os.path.exists(path + '/result.png'):
+        plt.figure(figsize=[14,7])
+        plt.subplot(1,2,1)
+        plt.plot(train_loss,label = "train loss")
+        plt.plot(test_loss,label = "test_loss")
+        plt.legend()
+        plt.subplot(1,2,2)
+        plt.plot(train_acc,label = "train_acc")
+        plt.plot(test_acc,label = "test_acc")
+        plt.legend()
+        index = np.argmax(test_acc)
+        plt.scatter(index,test_acc[index],edgecolors='r',label="best_acc "+str(test_acc[index]))
+        print("best_acc："+str(test_acc[index]))
+        plt.legend()
+        #plt.show()
+        plt.savefig(path+'/result.png')
+
+
     acc_file = json.dumps(test_acc[index], sort_keys=True, indent=4, separators=(',', ':'))
-    with open(path+'/best_acc.json', 'w') as json_file:
-        json_file.write(acc_file)
+
+    if not os.path.exists(path+'/best_acc.json') and test_acc[index]>10 :
+        with open(path+'/best_acc.json', 'w') as json_file:
+            json_file.write(acc_file)

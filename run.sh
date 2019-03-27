@@ -65,8 +65,31 @@
 #CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 44 --scheduler cosine  --dataset CIFAR100
 #CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 56 --scheduler cosine  --dataset CIFAR100
 
-# 3月25日
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 20 --use_cl_lp
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 32
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 44
-CUDA_VISIBLE_DEVICES=1 python train.py --arch resnet --depth 56
+# 3月26日
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --start_epoch 60
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_alpha 0.01
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_alpha 0.1
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_alpha 0.5
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_alpha 0.5 --start_epoch 60
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_alpha 0.5 --start_epoch 130 --end_epoch 150
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.2
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.8
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.8 --start_epoch 60
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.8 --start_epoch 20 --end_epoch 100
+
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp  --start_epoch 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp  --start_epoch 60
+#
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --lp_p 0.8
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --lp_p 0.2
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --lp_p 0
+#
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --lp_p 0.2 --start_epoch 20 --rgl_interval 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --lp_p 0.2 --start_epoch 20 --rgl_interval 20
+
+#3 月 27 日
+CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.5 --start_epoch 20 --end_epoch 100
+CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.2 --start_epoch 20 --end_epoch 100
+CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.9 --start_epoch 20 --end_epoch 100

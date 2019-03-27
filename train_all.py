@@ -86,9 +86,11 @@ def parse_args():
         '--tensorboard', dest='tensorboard', action='store_true', default=True)
     parser.add_argument(
         '--no-tensorboard', dest='tensorboard', action='store_false')
-    parser.add_argument('--tensorboard_train_images', action='store_true')
-    parser.add_argument('--tensorboard_test_images', action='store_true')
-    parser.add_argument('--tensorboard_model_params', action='store_true')
+    parser.add_argument('--tensorboard_train_images', action='store_true', default=True)
+    parser.add_argument('--tensorboard_test_images', action='store_true',default=True)
+    parser.add_argument('--tensorboard_model_params', action='store_true',default=True)
+
+
 
     # configuration of optimizer
     parser.add_argument('--epochs', type=int)
@@ -168,7 +170,12 @@ def parse_args():
     parser.add_argument('--lp_alpha',type=float, default=0.05)
     parser.add_argument('--lp_p', type=float, default=0.5)
     parser.add_argument('--is_select', action='store_true')
-
+    parser.add_argument('--start_epoch',type = int ,default= 0)
+    parser.add_argument('--end_epoch', type=int, default=140)
+    # use regular label processor
+    parser.add_argument('--use_rgl_cl_lp', action='store_true')
+    parser.add_argument('--rgl_type',type=str,default='even')
+    parser.add_argument('--rgl_interval', type=int, default=5)
 
     args = parser.parse_args()
     if not is_tensorboard_available:
@@ -205,6 +212,9 @@ def train(epoch, model, optimizer, scheduler, criterion, train_loader, config,
     if data_config['use_cl_lp']==True:
         criterion.labelprocessor.reset()
 
+    if data_config['use_rgl_cl_lp'] == True and epoch >= data_config['start_epoch'] \
+            and epoch <= data_config['end_epoch'] and epoch % data_config['rgl_interval'] == 1:
+        criterion.labelprocessor.reset()
 
     for step, (data, targets) in enumerate(train_loader):
         global_step += 1
@@ -349,7 +359,7 @@ def train(epoch, model, optimizer, scheduler, criterion, train_loader, config,
                 param.grad.data.div_(n_split)
             optimizer.step()
 
-        if data_config['use_cl_lp'] == True:
+        if data_config['use_cl_lp'] == True or data_config['use_rgl_cl_lp']==True:
             criterion.labelprocessor.append(outputs.data,targets.data)
 
         loss_ = loss.item()
@@ -389,7 +399,13 @@ def train(epoch, model, optimizer, scheduler, criterion, train_loader, config,
                             accuracy_meter.avg,
                         ))
 
-    if data_config['use_cl_lp'] == True:
+    if data_config['use_cl_lp'] == True and epoch>= data_config['start_epoch'] \
+            and epoch<= data_config['end_epoch']:
+        criterion.labelprocessor.update()
+        print(criterion.labelprocessor.emsemble_label)
+
+    elif data_config['use_rgl_cl_lp'] == True and epoch>= data_config['start_epoch'] \
+            and epoch<= data_config['end_epoch'] and epoch%data_config['rgl_interval']==0:
         criterion.labelprocessor.update()
         print(criterion.labelprocessor.emsemble_label)
 
@@ -609,7 +625,8 @@ def main():
         # update state dictionary
         state = update_state(state, epoch, epoch_log['test']['accuracy'],
                              model, optimizer)
-
+        if config['data_config']['use_cl_lp'] == True:
+            state['label'] = train_criterion.labelprocessor.emsemble_label
         # save model
         utils.save_checkpoint(state, outdir)
 

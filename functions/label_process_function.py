@@ -113,13 +113,9 @@ def my_CrossEntrophyloss(logit, prob):
     """ Cross-entropy function"""
 
     soft_logit = F.log_softmax(logit, dim=1)
-
     prob.type(torch.cuda.FloatTensor)
-
     Entrophy = prob.mul(soft_logit)
-
     loss = -1 * torch.sum(Entrophy, 1)
-
     loss = torch.mean(loss)
 
     return loss

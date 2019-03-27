@@ -159,7 +159,12 @@ def _get_data_config(args):
         'use_cl_lp',
         'lp_alpha',
         'lp_p',
-        'is_select'
+        'is_select',
+        'start_epoch',
+        'end_epoch',
+        'use_rgl_cl_lp',
+        'rgl_type',
+        'rgl_interval'
     ]
     json_keys = ['random_erasing_area_ratio_range']
     config = _args2config(args, keys, json_keys)
