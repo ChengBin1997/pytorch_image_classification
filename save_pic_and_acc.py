@@ -7,6 +7,7 @@ checkfilename = "log.json"
 function = save_pic_and_acc
 
 
+
 def eachFile(filepath):
     pathDir = os.listdir(filepath)      #获取当前路径下的文件名，返回List
     for s in pathDir:
@@ -17,7 +18,7 @@ def eachFile(filepath):
         else:
             eachFile(newDir)                #如果不是文件，递归这个文件夹的路径
 
-eachFile("./")
+eachFile("result/CIFAR10/resnet")
 
 
 

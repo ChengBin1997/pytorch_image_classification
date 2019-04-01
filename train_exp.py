@@ -5,7 +5,7 @@ import pathlib
 import time
 import json
 import logging
-import argparse
+
 import numpy as np
 import random
 
@@ -27,8 +27,10 @@ from dataloader import get_loader
 import utils
 from utils import str2bool, AverageMeter
 import augmentations
-from argparser import get_config,get_dir
+from argparser import parse_args
 import sys
+
+
 
 torch.backends.cudnn.benchmark = True
 
@@ -40,155 +42,6 @@ logger = logging.getLogger(__name__)
 
 global_step = 0
 
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--arch', type=str)
-    parser.add_argument('--config', type=str)
-
-    # model config (VGG)
-    parser.add_argument('--n_channels', type=str)
-    parser.add_argument('--n_layers', type=str)
-    parser.add_argument('--use_bn', type=str2bool)
-    #
-    parser.add_argument('--base_channels', type=int)
-    parser.add_argument('--block_type', type=str)
-    parser.add_argument('--depth', type=int)
-    # model config (ResNet-preact)
-    parser.add_argument('--remove_first_relu', type=str2bool)
-    parser.add_argument('--add_last_bn', type=str2bool)
-    parser.add_argument('--preact_stage', type=str)
-    # model config (WRN)
-    parser.add_argument('--widening_factor', type=int)
-    # model config (DenseNet)
-    parser.add_argument('--growth_rate', type=int)
-    parser.add_argument('--compression_rate', type=float)
-    # model config (WRN, DenseNet)
-    parser.add_argument('--drop_rate', type=float)
-    # model config (PyramidNet)
-    parser.add_argument('--pyramid_alpha', type=int)
-    # model config (ResNeXt)
-    parser.add_argument('--cardinality', type=int)
-    # model config (shake-shake)
-    parser.add_argument('--shake_forward', type=str2bool)
-    parser.add_argument('--shake_backward', type=str2bool)
-    parser.add_argument('--shake_image', type=str2bool)
-    # model config (SENet)
-    parser.add_argument('--se_reduction', type=int)
-
-    parser.add_argument('--outdir', type=str)
-    parser.add_argument('--seed', type=int, default=17)
-    parser.add_argument('--test_first', type=str2bool, default=True)
-    parser.add_argument('--device', type=str, default='cuda')
-
-    # TensorBoard configuration
-    parser.add_argument(
-        '--tensorboard', dest='tensorboard', action='store_true', default=True)
-    parser.add_argument(
-        '--no-tensorboard', dest='tensorboard', action='store_false')
-    parser.add_argument('--tensorboard_train_images', action='store_true', default=True)
-    parser.add_argument('--tensorboard_test_images', action='store_true',default=True)
-    parser.add_argument('--tensorboard_model_params', action='store_true',default=True)
-
-
-
-    # configuration of optimizer
-    parser.add_argument('--epochs', type=int)
-    parser.add_argument('--batch_size', type=int)
-    parser.add_argument('--ghost_batch_size', type=int)
-    parser.add_argument(
-        '--optimizer', type=str, choices=['sgd', 'adam', 'lars'])
-    parser.add_argument('--gradient_clip', type=float)
-    parser.add_argument('--base_lr', type=float)
-    parser.add_argument('--weight_decay', type=float)
-    parser.add_argument('--no_weight_decay_on_bn', action='store_true')
-    # configuration for SGD
-    parser.add_argument('--momentum', type=float)
-    parser.add_argument('--nesterov', type=str2bool)
-    # configuration for learning rate scheduler
-    parser.add_argument(
-        '--scheduler',
-        type=str,
-        choices=['none', 'multistep', 'cosine', 'sgdr'])
-    # configuration for multi-step scheduler]
-    parser.add_argument('--milestones', type=str)
-    parser.add_argument('--lr_decay', type=float)
-    # configuration for cosine-annealing scheduler and SGDR scheduler
-    parser.add_argument('--lr_min', type=float, default=0)
-    # configuration for SGDR scheduler
-    parser.add_argument('--T0', type=int)
-    parser.add_argument('--Tmult', type=int)
-    # configuration for Adam
-    parser.add_argument('--betas', type=str)
-    # configuration for LARS
-    parser.add_argument('--lars_eps', type=float, default=1e-9)
-    parser.add_argument('--lars_thresh', type=float, default=1e-2)
-
-    # configuration of data loader
-    parser.add_argument(
-        '--dataset',
-        type=str,
-        default='CIFAR10',
-        choices=['CIFAR10', 'CIFAR100', 'MNIST', 'FashionMNIST', 'KMNIST'])
-    parser.add_argument('--num_workers', type=int, default=7)
-    # standard data augmentation
-    parser.add_argument('--use_random_crop', type=str2bool)
-    parser.add_argument('--random_crop_padding', type=int, default=4)
-    parser.add_argument('--use_horizontal_flip', type=str2bool)
-    # (dual-)cutout configuration
-    parser.add_argument('--use_cutout', action='store_true', default=False)
-    parser.add_argument(
-        '--use_dual_cutout', action='store_true', default=False)
-    parser.add_argument('--cutout_size', type=int, default=16)
-    parser.add_argument('--cutout_prob', type=float, default=1)
-    parser.add_argument('--cutout_inside', action='store_true', default=False)
-    parser.add_argument('--dual_cutout_alpha', type=float, default=0.1)
-    # random erasing configuration
-    parser.add_argument(
-        '--use_random_erasing', action='store_true', default=False)
-    parser.add_argument('--random_erasing_prob', type=float, default=0.5)
-    parser.add_argument(
-        '--random_erasing_area_ratio_range', type=str, default='[0.02, 0.4]')
-    parser.add_argument(
-        '--random_erasing_min_aspect_ratio', type=float, default=0.3)
-    parser.add_argument('--random_erasing_max_attempt', type=int, default=20)
-    # mixup configuration
-    parser.add_argument('--use_mixup', action='store_true', default=False)
-    parser.add_argument('--mixup_alpha', type=float, default=1)
-    # RICAP configuration
-    parser.add_argument('--use_ricap', action='store_true', default=False)
-    parser.add_argument('--ricap_beta', type=float, default=0.3)
-    # label smoothing configuration
-    parser.add_argument(
-        '--use_label_smoothing', action='store_true', default=False)
-    parser.add_argument('--label_smoothing_epsilon', type=float, default=0.1)
-    # fp16
-    parser.add_argument('--fp16', action='store_true')
-    parser.add_argument('--use_amp', action='store_true')
-    # use label processor
-    parser.add_argument('--use_cl_lp', action='store_true')
-    parser.add_argument('--lp_alpha',type=float, default=0.05)
-    parser.add_argument('--lp_p', type=float, default=0.5)
-    parser.add_argument('--is_select', action='store_true')
-    parser.add_argument('--start_epoch',type = int ,default= 0)
-    parser.add_argument('--end_epoch', type=int, default=140)
-    # use regular label processor
-    parser.add_argument('--use_rgl_cl_lp', action='store_true')
-    parser.add_argument('--rgl_type',type=str,default='even')
-    parser.add_argument('--rgl_interval', type=int, default=5)
-
-    args = parser.parse_args()
-    if not is_tensorboard_available:
-        args.tensorboard = False
-    if not is_apex_available:
-        args.use_amp = False
-    if args.use_amp:
-        args.fp16 = True
-
-    config = get_config(args)
-
-
-    return config
 
 
 def train(epoch, model, optimizer, scheduler, criterion, train_loader, config,
@@ -207,6 +60,9 @@ def train(epoch, model, optimizer, scheduler, criterion, train_loader, config,
     loss_meter = AverageMeter()
     accuracy_meter = AverageMeter()
     start = time.time()
+
+    if not data_config['rgl_type'] =='stable' and data_config['use_rgl_cl_lp'] == True:
+        criterion.labelprocessor.set(epoch,data_config['rgl_type'])
 
 
     if data_config['use_cl_lp']==True:
@@ -608,6 +464,7 @@ def main():
     }
     epoch_logs = []
     for epoch, seed in zip(range(1, optim_config['epochs'] + 1), epoch_seeds):
+        print('\n'+run_config['outdir'])
         np.random.seed(seed)
         # train
         train_log = train(epoch, model, optimizer, scheduler, train_criterion,
@@ -629,6 +486,16 @@ def main():
             state['label'] = train_criterion.labelprocessor.emsemble_label
         # save model
         utils.save_checkpoint(state, outdir)
+
+    best_acc=utils.save_pic_and_acc(run_config['outdir'])
+    if config['run_config']['is_final']:
+        f=open('final_result/all.json', 'a')
+    else:
+        f=open('result/all.json', 'a')
+    f.write(run_config['outdir']+'  '+str(best_acc)+'\n')
+
+
+
 
 
 if __name__ == '__main__':

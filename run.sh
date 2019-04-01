@@ -90,6 +90,61 @@
 #CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --lp_p 0.2 --start_epoch 20 --rgl_interval 20
 
 #3 月 27 日
-CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.5 --start_epoch 20 --end_epoch 100
-CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.2 --start_epoch 20 --end_epoch 100
-CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.9 --start_epoch 20 --end_epoch 100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.5 --start_epoch 20 --end_epoch 100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.2 --start_epoch 20 --end_epoch 100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.9 --start_epoch 20 --end_epoch 100
+
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.9 --start_epoch 20 --end_epoch 75
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.9 --lp_alpha 0.1 --start_epoch 20 --end_epoch 75
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --lp_p 0.9 --lp_alpha 0.5 --start_epoch 20 --end_epoch 75
+
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --rgl_type p_discrete1
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 32 --use_rgl_cl_lp --rgl_type p_discrete1
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --rgl_type p_discrete2
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 32 --use_rgl_cl_lp --rgl_type p_discrete2
+
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --lp_p 0.5 --start_epoch 20 --rgl_interval 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 32 --use_rgl_cl_lp --lp_p 0.5 --start_epoch 20 --rgl_interval 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 44 --use_rgl_cl_lp --lp_p 0.5 --start_epoch 20 --rgl_interval 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_rgl_cl_lp --lp_p 0.5 --start_epoch 20 --rgl_interval 10
+#
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --lp_p 0.5 --start_epoch 20 --rgl_interval 10 --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 32 --use_rgl_cl_lp --lp_p 0.5 --start_epoch 20 --rgl_interval 10 --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 44 --use_rgl_cl_lp --lp_p 0.5 --start_epoch 20 --rgl_interval 10 --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_rgl_cl_lp --lp_p 0.5 --start_epoch 20 --rgl_interval 10 --dataset CIFAR100
+#
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_rgl_cl_lp --lp_p 0.2 --start_epoch 20 --rgl_interval 10 --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 32 --use_rgl_cl_lp --lp_p 0.2 --start_epoch 20 --rgl_interval 10 --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 44 --use_rgl_cl_lp --lp_p 0.2 --start_epoch 20 --rgl_interval 10 --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_rgl_cl_lp --lp_p 0.2 --start_epoch 20 --rgl_interval 10 --dataset CIFAR100
+
+# 3月28日
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_rgl_cl_lp --lp_p 0.5 --rgl_interval 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_rgl_cl_lp --lp_p 0.5 --rgl_interval 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_cl_lp
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_cl_lp
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_cl_lp
+
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_random_crop --random_crop_padding 4 --use_horizontal_flip
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_rgl_cl_lp --lp_p 0.5 --rgl_interval 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_random_crop --random_crop_padding 4 --use_horizontal_flip
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_rgl_cl_lp --lp_p 0.5 --rgl_interval 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_random_crop --random_crop_padding 4 --use_horizontal_flip
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_rgl_cl_lp --lp_p 0.5 --rgl_interval 10
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_cl_lp
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_cl_lp
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 56 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_cl_lp
+
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_rgl_cl_lp --lp_p 0.5 --rgl_interval 10    --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_rgl_cl_lp --lp_p 0.5 --rgl_interval 10    --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_cl_lp --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_cl_lp --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_random_crop --random_crop_padding 4 --use_horizontal_flip --use_cl_lp --dataset CIFAR100
+
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --dataset CIFAR100
+#CUDA_VISIBLE_DEVICES=1 python train_all.py --arch resnet --depth 20 --use_cl_lp --dataset CIFAR100

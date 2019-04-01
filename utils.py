@@ -11,8 +11,11 @@ import torch.nn.functional as F
 import augmentations
 import optim
 from functions.label_process_function import CategoryLabelProcessCriterion
-import matplotlib.pyplot as plt
+
 import json
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 def str2bool(s):
     if s.lower() == 'true':
@@ -231,7 +234,9 @@ def get_criterion(data_config):
     return train_criterion, test_criterion
 
 def save_pic_and_acc(path):
-
+    import os
+    if not os.path.exists(path + '/log.json'):
+        print("no log.json in " + path)
     with open(path+'/log.json', 'r') as json_file:
         parm = json.load(json_file)
 
@@ -247,27 +252,37 @@ def save_pic_and_acc(path):
         train_loss.append(epoch['train']['loss'])
         test_loss.append(epoch['test']['loss'])
 
+    index = np.argmax(test_acc)
+
+    if not os.path.exists(path+'/best_acc.json') :
+        acc_file = json.dumps(test_acc[index], sort_keys=True, indent=4, separators=(',', ':'))
+        with open(path+'/best_acc.json', 'w') as json_file:
+            json_file.write(acc_file)
+            print('{}：{}'.format(path, test_acc[index]))
+    elif os.path.exists(path+'/best_acc.json'):
+        with open(path + '/best_acc.json', 'r') as json_file:
+            best_acc = json.load(json_file)
+            print('{}：{}'.format(path,best_acc))
+
+
+
     import os
     if not os.path.exists(path + '/result.png'):
-        plt.figure(figsize=[14,7])
+        #plt.figure(figsize=[14,7])
         plt.subplot(1,2,1)
         plt.plot(train_loss,label = "train loss")
         plt.plot(test_loss,label = "test_loss")
-        plt.legend()
+        #plt.legend()
         plt.subplot(1,2,2)
         plt.plot(train_acc,label = "train_acc")
         plt.plot(test_acc,label = "test_acc")
-        plt.legend()
-        index = np.argmax(test_acc)
+        #plt.legend()
+
         plt.scatter(index,test_acc[index],edgecolors='r',label="best_acc "+str(test_acc[index]))
         print("best_acc："+str(test_acc[index]))
         plt.legend()
         #plt.show()
         plt.savefig(path+'/result.png')
 
+    return test_acc[index]
 
-    acc_file = json.dumps(test_acc[index], sort_keys=True, indent=4, separators=(',', ':'))
-
-    if not os.path.exists(path+'/best_acc.json') and test_acc[index]>10 :
-        with open(path+'/best_acc.json', 'w') as json_file:
-            json_file.write(acc_file)

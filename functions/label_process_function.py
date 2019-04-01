@@ -98,6 +98,20 @@ class CategoryLabelProcessor():
         self.emsemble_label[index2,:] = (1-self.alpha)*self.emsemble_label[index2,:]+self.alpha*newlabel
         return self.emsemble_label
 
+    def set(self,epoch=None, set_type = None):
+        if set_type == 'p_discrete1':
+            epochlist=[40,70,100,130]
+            plist = [0,0.2,0.5,0.8]
+            if epoch in epochlist:
+                index = epochlist.index(epoch)
+                self.p = plist[index]
+        elif set_type == 'p_discrete2':
+            epochlist=[40,70,100,130]
+            plist = [0.8,0.5,0.2,0]
+            if epoch in epochlist:
+                index = epochlist.index(epoch)
+                self.p = plist[index]
+
 
 class CategoryLabelProcessCriterion():
     def __init__(self, Num, alpha=0.01, p=0.5, is_select=True):
@@ -119,3 +133,4 @@ def my_CrossEntrophyloss(logit, prob):
     loss = torch.mean(loss)
 
     return loss
+
